@@ -1,7 +1,7 @@
 import {z} from 'zod'
 
 const usernameValidation=z.string()
-                        .min(4,"Usename minimum 4 charecter")
+                        .min(4,"Username minimum 4 charecter")
                         .max(10,"Username with in 10 charecters")
             
 const emailValidation=z.string()

@@ -1,6 +1,6 @@
 import mongoose,{Schema,Document} from "mongoose";
 import { IMessage } from './message'
-import MessageSchema from '@/app/models/message'
+import { MessageSchema } from "./message";
 export interface IUser extends Document{
     username:string,
     email:string,
@@ -9,7 +9,7 @@ export interface IUser extends Document{
     verifyCodeExpiry:Date,
     isVerified:boolean,
     isAcceptingMessage:boolean,
-    message:IMessage[]
+    message:[IMessage]
 }
 //define the type of Message schema
 const UserSchema:Schema<IUser>=new Schema({

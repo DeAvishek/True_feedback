@@ -1,6 +1,8 @@
-import { promises } from "dns";
+
 import mongoose from "mongoose";
-import { type } from "os";
+import dotenv from "dotenv";
+dotenv.config();
+
 
 const mongo_uri = process.env.MONGO_URI
 
@@ -19,7 +21,7 @@ async function dbConnect(): Promise<void> {
             const db = await mongoose.connect(mongo_uri || "")
             connection.isConnected = db.connections[0].readyState
             console.log("Db connection succesfully")
-            console.log(db.connections)
+            console.log(db.connections[0].readyState)
 
         } catch (error) {
             console.log("db connection failed with error.. ",error)

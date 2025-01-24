@@ -6,7 +6,7 @@ export  interface IMessage extends Document{
 }
 
 //define the type of Message schema
-const MessageSchema:Schema<IMessage>=new Schema({
+export const MessageSchema:Schema<IMessage>=new Schema({
     content:{
         type:String,
         required:true,

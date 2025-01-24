@@ -4,12 +4,13 @@ import { resend_key } from "../lib/resend";
  async function emailSend(username:string,email:string,verifyCode:string){
         try {
             const { data, error } = await resend_key.emails.send({
-              from: 'onboarding@resend.dev>',
+              from: 'devhub.cord.com',
               to: email,
               subject: 'Hello world',
               react: Email({username,otp:verifyCode}),
             });
             if (error) {
+                console.error("Resend Error:", error);
                 return Response.json({ error }, { status: 500 });
               }
               return Response.json(data);
