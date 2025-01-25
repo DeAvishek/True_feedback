@@ -2,12 +2,13 @@ import UserModel from "@/app/models/user";
 import dbConnect from "@/app/lib/db";
 import bcrypt from "bcryptjs"
 import emailSend from "@/app/helper/sendEmailverification";
-
+import {SignupScheamValidation} from '@/app/schemas/signupScheam'
 
 export async function POST(request: Request) {
     await dbConnect()//database connection establish
     try {
         const { username, email, password } = await request.json()//get request bodies data
+        const signUpValidation=SignupScheamValidation.parse({username,email,password})
         const existing_User_By_UserName = await UserModel.findOne({ username,isVerified:true })
 
         if (existing_User_By_UserName) {
