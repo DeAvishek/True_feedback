@@ -1,6 +1,6 @@
 import {z} from 'zod'
 
-const usernameValidation=z.string()
+export const usernameValidation=z.string()
                         .min(4,"Username minimum 4 charecter")
                         .max(10,"Username with in 10 charecters")
             

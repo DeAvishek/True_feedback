@@ -1,6 +1,6 @@
 import UserModel from "@/app/models/user";
 import dbConnect from "@/app/lib/db";
-// import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs"
 import emailSend from "@/app/helper/sendEmailverification";
 
 
@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     await dbConnect()//database connection establish
     try {
         const { username, email, password } = await request.json()//get request bodies data
-        const existing_User_By_UserName = await UserModel.findOne({ username })
+        const existing_User_By_UserName = await UserModel.findOne({ username,isVerified:true })
 
         if (existing_User_By_UserName) {
             return new Response(JSON.stringify({ success: false, message: "Username is already taken" }), { status: 400 })
@@ -18,11 +18,12 @@ export async function POST(request: Request) {
             if (existing_User_By_Email.isVerified) {
                 return new Response(JSON.stringify({ success: false, message: "Email is already taken and verified" }), { status: 400 })
             } else {
-                // const hashPassword = await bcrypt.hash(password, 10)
+                const hashPassword = await bcrypt.hash(password, 10)
                 const expDate = new Date()
                 expDate.setHours(expDate.getHours() + 1)
                 const verifyCode = Math.floor(100000 + Math.random() * 900000).toString()
-                existing_User_By_Email.password = password
+                existing_User_By_Email.username=username
+                existing_User_By_Email.password = hashPassword
                 existing_User_By_Email.verifyCode = verifyCode;
                 existing_User_By_Email.verifyCodeExpiry = expDate;
 
@@ -36,14 +37,14 @@ export async function POST(request: Request) {
 
             }
         }
-        // const hashedPassword = await bcrypt.hash(password, 10)
+        const hashedPassword = await bcrypt.hash(password, 10)
         const verifyCode = Math.floor(100000 + Math.random() * 900000).toString()
         const expDate = new Date()
         expDate.setHours(expDate.getHours() + 1)
         const newUser = new UserModel({
             username,
             email,
-            password,
+            password:hashedPassword,
             verifyCode: verifyCode,
             verifyCodeExpiry: expDate,
             isVerified: false,

@@ -4,7 +4,7 @@ import { resend_key } from "../lib/resend";
  async function emailSend(username:string,email:string,verifyCode:string){
         try {
             const { data, error } = await resend_key.emails.send({
-              from: 'devhub.cord.com',
+              from: 'onboarding@resend.dev',
               to: email,
               subject: 'Hello world',
               react: Email({username,otp:verifyCode}),
