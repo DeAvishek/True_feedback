@@ -18,7 +18,7 @@ export async function GET(request:Request){
             }else{
                 return new Response(JSON.stringify({
                     success:true,
-                    message:"no user exists"
+                    message:"User name is exist but not verified"
                 }),{
                     status:200
                 })
@@ -26,7 +26,7 @@ export async function GET(request:Request){
         }
         return new Response(JSON.stringify({
             success:true,
-            message:"no user exists"
+            message:"Username is unique"
         }),{
             status:200
         })

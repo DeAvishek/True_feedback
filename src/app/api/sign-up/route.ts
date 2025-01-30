@@ -63,7 +63,7 @@ export async function POST(request: Request) {
             );
         }
         return new Response(
-            JSON.stringify({ success: true, message: "Accout created successfully please verify your email" }),
+            JSON.stringify({ success: true, message: "Account created successfully please verify your email" }),
             { status: 201 }
         );
     }

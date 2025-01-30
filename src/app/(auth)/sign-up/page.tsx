@@ -4,11 +4,11 @@ import { SignupScheamValidation } from '@/app/schemas/signupScheam'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from "react"
-import { redirect } from "next/navigation";
-import { useDebounceValue } from 'usehooks-ts'
+import { useRouter } from "next/navigation";
+import { useDebounceCallback } from 'usehooks-ts'
 import axios from 'axios'
 import Link from "next/link";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -19,24 +19,21 @@ const SignUpPage = () => {
   const [isCheckingName, setisCheckingName] = useState(false)
   const [isSubmittingForm, setisSubmittingForm] = useState(false)
   const [ResponseMessage, setResponseMessage] = useState('')
-  const debUserName = useDebounceValue(username, 300) //debouncing the username
-
+  const debounced = useDebounceCallback(setusername, 500) //debouncing the username
+  const router=useRouter()
   //zod validation
   const form = useForm({
     resolver: zodResolver(SignupScheamValidation)
   })
   //checking username
   const checkUseName = async () => {
-    const headers = {
-      'Content-Type': 'application/json'
-    };
     try {
       setisCheckingName(true)
       setUserNameMessage('')
-      const response = axios.get(`/api/checking-username?username=${debUserName}`, { headers })
+      const response = await axios.get(`/api/checking-username?username=${username}`)
       setUserNameMessage(response.data.message)
     } catch (error: any) {
-      setUserNameMessage(error.message)
+      setUserNameMessage(error.response.data.error)
     } finally {
       setisCheckingName(false)
     }
@@ -45,19 +42,23 @@ const SignUpPage = () => {
     try {
       setisSubmittingForm(true)
       const response = await axios.post('/api/sign-up', data);
-      if (response.status === 200) {
-        setResponseMessage(response.data.message);
-        redirect(`/verify-code/${username}`)
+      if (response.status === 201) {
+        setResponseMessage("Account created successfully verify email")
+        console.log(ResponseMessage) //Todo remove
+        router.push(`/verify-code/${username}`)
       }
-      setisSubmittingForm(false)
     } catch (error: any) {
       setResponseMessage(error.response.data.error)
+      console.log(setResponseMessage) //Todo remove
+    }finally{
+      setisSubmittingForm(false)
+      setResponseMessage('')
     }
   }
   useEffect(() => {
     checkUseName()
   },
-    [debUserName])
+    [username])
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 " >
       <div className="w-full max-w-md p-8 space-y-8 bg-white-rounded-lg shadow-md ">
@@ -80,9 +81,11 @@ const SignUpPage = () => {
                       {...field}
                       onChange={(e) => {
                         field.onChange(e)
-                        setusername(e.target.value)
+                        debounced(e.target.value)
                       }} />
                   </FormControl>
+                  {isCheckingName && <p>loading...</p>}
+                  {UserNameMessage==="Username is unique"?(<p className="text-green-500">{UserNameMessage}</p>):(<p className="text-red-500">{UserNameMessage}</p>)}
                   <FormMessage />
                 </FormItem>
               )}
