@@ -20,9 +20,9 @@ export const AuthOptions: NextAuthOptions = {
                 }
                 await dbConnect()  //connect database
                 try {
-                    const user = await UserModel.findOne({ email: credentials?.email })
+                    const user = await UserModel.findOne({ email: credentials.email })
                     if (!user) {
-                        throw new Error("No user found")
+                        throw new Error("User not found")
                     }
                     if (!user.isVerified) {
                         throw new Error("Please verify your account first")
@@ -43,18 +43,23 @@ export const AuthOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user }) {
+            if(user){
             token._id = user._id?.toString()
-            return token
+            token.email=user.email
+            }
+            return token;
         },
         async session({ session, token,user }) {
-            if(token)
+            if(token){
             session.user._id=user._id
+            session.user.email=user.email
+            }
             return session
         }
 
     },
     pages: {
-        signIn: '/sign-in',
+        signIn: `/sign-in`,
         signOut: '/sign-out',
     }, session: {
         strategy: "jwt"

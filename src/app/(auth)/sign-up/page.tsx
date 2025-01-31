@@ -97,7 +97,7 @@ const SignUpPage = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="eamil"
+                    <Input placeholder="email"
                       {...field} />
                   </FormControl>
                   <FormMessage />

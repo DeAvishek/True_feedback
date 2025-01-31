@@ -5,6 +5,6 @@ export const verifyCodeValidation = z.string()
   .max(6, "Verification code must be 6 characters")
   .regex(/^\d+$/, "Must contain only numbers");
 
-  export const formSchema = z.object({
-    'verify-code': verifyCodeValidation // Proper object schema structure
-  });
+//   export const formSchema = z.object({
+//     'verify-code': verifyCodeValidation // Proper object schema structure
+//   });
