@@ -1,18 +1,15 @@
-import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
-import { NextAuthOptions } from "next-auth"
+import type { NextAuthOptions } from "next-auth"
 import dbConnect from "@/app/lib/db";
 import bcrypt from "bcryptjs"
 import UserModel from "@/app/models/user";
-
 export const AuthOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: 'Credentials',
-            id: "Credentials",
             credentials: {
-                email: { label: "Email", type: "text" },
-                password: { label: "Password", type: "password" }
+                email: { label: "email", type: "text" },
+                password: { label: "password", type: "password" }
             },
             async authorize(credentials): Promise<any> {
                 if (!credentials?.email || !credentials.password) {
@@ -20,21 +17,25 @@ export const AuthOptions: NextAuthOptions = {
                 }
                 await dbConnect()  //connect database
                 try {
-                    const user = await UserModel.findOne({ email: credentials.email })
-                    if (!user) {
+                    const userDoc = await UserModel.findOne({ email: credentials.email })
+                    if (!userDoc) {
+                        console.log("❌ User not found:", credentials.email);  //Todo remove
                         throw new Error("User not found")
                     }
+                    const user = userDoc.toObject();
                     if (!user.isVerified) {
+                        console.log("❌ User not verified:", user.email);   //Todo remove
                         throw new Error("Please verify your account first")
                     }
                     const comparePassword = await bcrypt.compare(credentials.password, user.password)
                     if (!comparePassword) {
-                        throw new Error("invalid credentials..")
+                        throw new Error("invalid credentials.. ok")
                     }
+                    console.log("✅ User authenticated:", user.email);  //Todo remove
                     return user
 
                 } catch (error: any) {
-                    throw new Error(error)
+                    throw new Error(error.message || "Authentication failed");
                 }
 
             }
@@ -47,13 +48,15 @@ export const AuthOptions: NextAuthOptions = {
             token._id = user._id?.toString()
             token.email=user.email
             }
+            console.log("JWT Callback Token:", token);
             return token;
         },
-        async session({ session, token,user }) {
+        async session({ session, token }) {
             if(token){
-            session.user._id=user._id
-            session.user.email=user.email
+            session.user._id=token._id as string
+            session.user.email=token.email as string
             }
+            console.log("Session Callback Session:", session);
             return session
         }
 
@@ -62,7 +65,8 @@ export const AuthOptions: NextAuthOptions = {
         signIn: `/sign-in`,
         signOut: '/sign-out',
     }, session: {
-        strategy: "jwt"
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60
     },
-    secret: process.env.NEXT_AUTH_SECRET
+    secret: process.env.NEXTAUTH_SECRET
 }

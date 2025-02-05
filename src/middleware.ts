@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server'
 import { NextRequest } from 'next/server'
 import { getToken } from "next-auth/jwt"
-import path from 'path'
+export {default} from 'next-auth/middleware'
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
     const token= await getToken({req:request})  //due to handle by next-auth
     const url=request.nextUrl
+    console.log("Middleware Token:", token ||"hey");
 
     if(token && (
         url.pathname.startsWith('/sign-in')||
