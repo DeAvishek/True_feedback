@@ -11,7 +11,7 @@ export async function GET(){
     }
     try {
         await dbConnect()
-        const UserId=new mongoose.Types.ObjectId(session.user._id)  //userId casting
+        const UserId=new mongoose.Types.ObjectId(session?.user._id)  //userId casting
         const response=await UserModel.aggregate(
             [
                 {
@@ -21,7 +21,7 @@ export async function GET(){
                            }
                 },
                 {$unwind:"$message"},
-                {$sort:{'message.createdAt':1}},
+                {$sort:{"message.createdAt":1}},
                 {
                     $group:{
                           _id:"$_id",

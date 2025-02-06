@@ -1,7 +1,8 @@
-import AuthProvider from "./context/sessionprovider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import MessageCard from "@/components/MessageCard";
+import Navbar from "@/components/Navbar";
+import AuthProvider from "../context/sessionprovider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,11 +28,13 @@ export default function RootLayout({
   }
   return (
     <html lang="en">
-      <AuthProvider>
+        <AuthProvider>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            <Navbar/>
+            {/* <MessageCard messageId="1234" handleDeleteMessage="123456"/> */}
           {children}
         </body>
-      </AuthProvider>
+        </AuthProvider>
     </html>
   );
 }

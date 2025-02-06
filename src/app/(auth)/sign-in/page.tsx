@@ -24,7 +24,7 @@ const SignInPage = () => {
   const handleSignIn = async (data: z.infer<typeof SigninSchemaValidation>) => {
     try {
       setIsSubmittingForm(true);
-      setResponseMessage(''); // Clear previous messages
+      setResponseMessage('');
 
       const response = await signIn('credentials', {
         redirect:false,
