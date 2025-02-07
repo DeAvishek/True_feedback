@@ -17,6 +17,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import Suggestmessagecard from '@/components/Suggestmessagecard'
 const Page = () => {
     const [isSubmittingForm, setIsSubmittingForm] = useState(false);
     const [responseMessage, setresponseMessage] = useState('');
@@ -77,40 +78,45 @@ const Page = () => {
 
     return (
         <>
-            <div className="flex justify-center items-center min-h-screen">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handlePostMessage)} className="space-y-8 bg-white p-6 shadow-lg rounded-lg w-96">
-                        <FormField
-                            control={form.control}
-                            name="content"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Message</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Message" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        {responseMessage.includes("Message send successfully") ?
-                            (<p className='text-green-500'>Message send successfully</p>) :
-                            (<p className='text-red-500'></p>)
-                        }
-                        <Button type="submit" className="w-full">Send</Button>
-                    </form>
-                </Form>
+            <div className="flex flex-col gap-4 justify-center items-center min-h-screen">
+                <div>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(handlePostMessage)} className="space-y-8 bg-white p-6 shadow-lg rounded-lg w-96">
+                            <FormField
+                                control={form.control}
+                                name="content"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Message</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Message" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {responseMessage.includes("Message send successfully") ?
+                                (<p className='text-green-500'>Message send successfully</p>) :
+                                (<p className='text-red-500'></p>)
+                            }
+                            <Button type="submit" className="w-full">Send</Button>
+                        </form>
+                    </Form>
 
+                </div>
+                <div className='ml-5'>
+                    <div className='text-white-500 bg-pink-500 font-bold w-full max-w-48 ' >AI powred Suggestion</div>
+                    {loadingForSuggestMessage ? (
+                        <p>Getting...</p>
+                    ) : messageArr.length > 0 ? (
+                        messageArr.map((message, index) => (
+                            <Suggestmessagecard message={message}/>
+                        ))
+                    ) : (
+                        <p>No suggestions available</p> // Handle empty state
+                    )}
+                </div>
             </div>
-            {loadingForSuggestMessage ? (
-                <p>Getting...</p>
-            ) : messageArr.length > 0 ? (
-                messageArr.map((message, index) => (
-                    <p key={index}>{message}</p>
-                ))
-            ) : (
-                <p>No suggestions available</p> // Handle empty state
-            )}
         </>
 
     )
