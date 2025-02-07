@@ -47,13 +47,17 @@ export const AuthOptions: NextAuthOptions = {
             if(user){
             token._id = user._id?.toString()
             token.email=user.email
+            token.username=user.username
             }
             return token;
         },
-        async session({ session, token }) {
+        async session({ session, token}) {
             if(token){
-            session.user._id=token._id as string
-            session.user.email=token.email as string
+                session.user = {
+                    _id: token._id as string,
+                    email: token.email as string,
+                    username: token.username as string, // Ensure username is assigned
+                };
             }
             return session
         }

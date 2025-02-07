@@ -4,9 +4,10 @@ import MessageModel from "@/app/models/message";
 import {IMessage} from "@/app/models/message"
 import { messageValidation } from "@/app/schemas/messageScheam";
 export async function POST(request:Request){
-    const {username,content}=await request.json()
+    const body=await request.json()
+    const content=body.content;
+    const username=body.user
     const ValidateContent=messageValidation.parse(content)
-
     try {
         await dbConnect()
         const user= await UserModel.findOne({username:username})

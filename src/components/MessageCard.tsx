@@ -27,8 +27,8 @@ const MessageCard = ({ messageId, handleDeleteMessage }: MessageCardProps) => {
     <Card className="w-[300px] p-2">
       <CardHeader className="flex items-center justify-between">
         <div>
-          <CardTitle className="text-sm">{messageId}</CardTitle>
-          <CardDescription className="text-xs">{handleDeleteMessage}</CardDescription>
+          <CardTitle className="text-sm">{handleDeleteMessage}</CardTitle>
+          {/* <CardDescription className="text-xs">{handleDeleteMessage}</CardDescription> */}
         </div>
         <AlertDialog>
           <AlertDialogTrigger asChild>
