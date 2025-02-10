@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next"
-import { AuthOptions } from "@/app/api/sign-up/auth/[...nextauth].ts/options"
+import { AuthOptions } from "@/app/api/auth/[...nextauth]/providers"
 import dbConnect from "@/app/lib/db"
 import UserModel from "@/app/models/user"
 
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
         const UserId = session?.user._id
         const user = await UserModel.findOne({ _id: UserId })
         if (!user) {
-            return new Response(JSON.stringify({ success: false, message: "User not found" }), { status: 404 })
+            return new Response(JSON.stringify({ success: false, message: "User not found" }), { status: 401 })
         }
         if (!user.isVerified) {
             return new Response(JSON.stringify({ success: false, message: "User not authorized" }), { status: 401 })
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
         const UserId = session?.user._id
         const user = await UserModel.findOne({ _id: UserId })
         if (!user) {
-            return new Response(JSON.stringify({ success: false, message: "User not found" }), { status: 404 })
+            return new Response(JSON.stringify({ success: false, message: "User not found" }), { status: 401 })
         }
         if (!user.isVerified) {
             return new Response(JSON.stringify({ success: false, message: "User not authorized" }), { status: 401 })

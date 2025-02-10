@@ -1,2 +1,6 @@
 import { z } from "zod";
-export const isAcceptingMessageValidation=z.boolean()
+const isAcceptingMessageValidation=z.boolean()
+
+export const accptingMessage=z.object({
+    isAccepting:isAcceptingMessageValidation
+})

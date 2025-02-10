@@ -97,7 +97,7 @@ const Page = () => {
                             />
                             {responseMessage.includes("Message send successfully") ?
                                 (<p className='text-green-500'>Message send successfully</p>) :
-                                (<p className='text-red-500'></p>)
+                                (<p className='text-red-500'>{responseMessage}</p>)
                             }
                             <Button type="submit" className="w-full">Send</Button>
                         </form>
@@ -110,7 +110,7 @@ const Page = () => {
                         <p>Getting...</p>
                     ) : messageArr.length > 0 ? (
                         messageArr.map((message, index) => (
-                            <Suggestmessagecard message={message}/>
+                            <Suggestmessagecard key={index} message={message}/>
                         ))
                     ) : (
                         <p>No suggestions available</p> // Handle empty state
