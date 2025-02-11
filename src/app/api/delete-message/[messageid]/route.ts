@@ -8,10 +8,11 @@ export async function DELETE(request: Request,{params}:{params:{messageid:string
     const messageId=await params.messageid
     const session = await getServerSession(AuthOptions)
     if (!session || !session.user || !session.user._id) {
-        return new Response(JSON.stringify({ success: false, message: "No  user found" }), { status: 401 });
+        return new Response(JSON.stringify({ success: false, message: "No user found" }), { status: 401 });
     }
     try {
         await dbConnect()
+
         const UserId = new mongoose.Types.ObjectId(session.user._id)
         const messageObjectId=new mongoose.Types.ObjectId(messageId)
         const upadatedResult = await UserModel.updateOne(

@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Suggestmessagecard from '@/components/Suggestmessagecard'
+import { RefreshCw } from 'lucide-react';
 const Page = () => {
     const [isSubmittingForm, setIsSubmittingForm] = useState(false);
     const [responseMessage, setresponseMessage] = useState('');
@@ -74,7 +75,7 @@ const Page = () => {
     }
     useEffect(() => {
         getSuggetMessage()
-    }, [])
+    }, [RefreshCw])
 
     return (
         <>
@@ -106,6 +107,11 @@ const Page = () => {
                 </div>
                 <div className='ml-5'>
                     <div className='text-white-500 bg-pink-500 font-bold w-full max-w-48 ' >AI powred Suggestion</div>
+                    <div>
+                      <Button onClick={getSuggetMessage} className='mt-2'>
+                        <RefreshCw/>
+                      </Button>
+                    </div>
                     {loadingForSuggestMessage ? (
                         <p>Getting...</p>
                     ) : messageArr.length > 0 ? (

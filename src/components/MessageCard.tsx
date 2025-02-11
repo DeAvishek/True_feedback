@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from './ui/button'
 import axios from 'axios'
-import AlertBox from './Alert'
 type MessageCardProps = {
   messageId: string,
   content: string
@@ -76,7 +75,6 @@ const MessageCard = ({ messageId, content }: MessageCardProps) => {
           </AlertDialog>
         </CardHeader>
       </Card>
-      {isdeleted && <AlertBox message={responseMessage}/>}
     </>
   )
 }

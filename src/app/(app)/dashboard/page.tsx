@@ -9,23 +9,23 @@ import { Switch } from "@/components/ui/switch"
 import { useForm } from "react-hook-form"
 import { Button } from '@/components/ui/button'
 import { accptingMessage } from '@/app/schemas/isacceptingmesSchema'
-import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { RefreshCw } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 const DashBoard = () => {
     const form = useForm({
         resolver: zodResolver(accptingMessage)
     })
-    const { setValue, register, watch } = form
     const [switchLoading, setswitchLoading] = useState(false);
-
-    const isAcceptingMessage = watch("isAcceptingMessage")
+    const [copyButtonText, setCopyButtonText] = useState("Copy")
     const [isLoading, setisLoading] = useState(false);
     const [Messages, setMessages] = useState([]);
     const [ResponseMessage, setResponseMesssage] = useState('')
     const { data: session } = useSession()
     const [ProfileUrl, setProfileUrl] = useState('')
     const username = session?.user.username
-    console.log("provided session is", session?.user.username)  //Todo remove
+    const [status, setstatus] = useState('')
+
     const getmessages = async () => {
         try {
             setisLoading(true);
@@ -43,18 +43,6 @@ const DashBoard = () => {
             setisLoading(false)
         }
     }
-    const acceptingStatus = useCallback(async () => {
-        try {
-            const response = await axios.get('/api/isacceptmessage')
-            if (response.status === 200) {
-                console.log(response.data.AcceptMessage)   //todo remove
-                setValue("isAcceptingMessage", response.data.AcceptMessage,{ shouldValidate: true })
-            }
-        } catch (error:any) {
-            console.log(error.response.data.error) //todo to remove
-        }
-
-    }, [setValue])
 
     useEffect(() => {
         const protocol = window.location.protocol;
@@ -62,55 +50,87 @@ const DashBoard = () => {
         setProfileUrl(`${protocol}//${host}/u/${username}`);
     }, [username])
 
+
+    const handleCopyToClipboard = useCallback(() => {
+        try {
+            window.navigator.clipboard.writeText(ProfileUrl)
+            setCopyButtonText("Copied")
+            setTimeout(() => {
+                setCopyButtonText("Copy ")
+            }, 1000);
+
+        } catch (error: any) {
+            console.log("failed to copy ", error)
+        }
+
+    }, [ProfileUrl])
+
+    const setAcceptingStatus = async () => {
+
+        try {
+            setswitchLoading(true)
+            const response = await axios.post('/api/isacceptmessage')
+            console.log(response.data.message) //todo to remove
+        } catch (error: any) {
+            console.log(error.response?.data?.error) //todo to remove
+        } finally {
+            setswitchLoading(false)
+        }
+
+    }
+
+    const acceptingStatus = useCallback(async () => {
+        try {
+            const response = await axios.get('/api/isacceptmessage')
+            if (response.status === 200) {
+                console.log(response.data.AcceptMessage)   //todo remove
+                setstatus(response.data.AcceptMessage)
+            }
+        } catch (error: any) {
+            console.log(error.response.data.error) //todo to remove
+        }
+
+    }, [getmessages, setAcceptingStatus])
+
+
     useEffect(() => {
         getmessages()
         acceptingStatus()
-        
-    }, [username,acceptingStatus])
-    
 
-    const handleCopyToClipboard = () => {
-        window.navigator.clipboard.writeText(ProfileUrl)
-    }
-
-    const setAcceptingStatus=async(newStatus: boolean)=>{
-        
-        try {
-            setswitchLoading(true)
-            const response=await axios.post('/api/acceptMessage',{isAcceptingMessage:newStatus})
-            console.log(response.data.message) //todo to remove
-            await acceptingStatus
-        } catch (error:any) {
-            console.log(error.response?.data?.error)
-            await acceptingStatus()  //todo to remove
-        }finally{
-            setswitchLoading(false)
-        }
-          
-    }
-
+    }, [username])
     return (
-        <div className="mt-10 w-full px-4">
-            <div className='flex item-center '>
+        <div className="mt-10 w-full px-4 flex flex-col items-center">
+            <div className="flex items-center w-full max-w-2xl gap-3 bg-gray-100 p-4 rounded-lg shadow-md">
                 <input
-                    className="w-1/2 p-2  border-gray-300 rounded-md ml-20 text-center"
+                    className="flex-1 p-2 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                     name="profileUrl"
                     defaultValue={ProfileUrl}
+                    readOnly
                 />
-                <Button onClick={handleCopyToClipboard}>copy</Button>
+                <Button
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition duration-300"
+                    onClick={handleCopyToClipboard}
+                >
+                    {copyButtonText}
+                </Button>
             </div>
-            <div>
-                <Switch 
-                {...register("isAcceptingMessage")}
-                onCheckedChange={setAcceptingStatus}
-                checked={isAcceptingMessage}
-                disabled={switchLoading}/>
-            </div>
+            <p className="mt-3 text-gray-600 text-sm">
+                Visit this URL to send Anonymous Feedback to <b className="text-black">{username}</b>
+            </p>
+
             {Messages.length === 0 ? (
                 <p>No content</p>
             ) : (
                 <>
-                    <div className='flex flex-wrap gap-5 justify-center'>
+                    <Switch
+                        onChange={acceptingStatus}
+                        onCheckedChange={setAcceptingStatus} />
+                    Accepting Message{status ? (<p>On</p>) : (<p>Off</p>)}
+                    <Button  onClick={getmessages} className='mt-2 '>
+                        <RefreshCw />
+                    </Button>
+                    <div className='flex flex-wrap gap-5 justify-center mt-10' >
+
                         {isLoading ? (
                             <Loader />
                         ) : (Messages.map((message, index) => (
@@ -123,5 +143,4 @@ const DashBoard = () => {
         </div>
     )
 }
-
 export default DashBoard
