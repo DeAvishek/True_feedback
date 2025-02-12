@@ -41,7 +41,7 @@ export default function Page() {
             if (response.status === 200) {
                 router.push('/sign-in');
             }
-        } catch (error: any) {
+        } catch (error:any) {
             setResponseMessage(
                 error.response?.data?.message || 
                 error.response?.data?.error || 

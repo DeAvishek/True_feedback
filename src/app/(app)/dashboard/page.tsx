@@ -6,16 +6,10 @@ import axios from 'axios'
 import MessageCard from '@/components/MessageCard'
 import Loader from '@/components/Loader'
 import { Switch } from "@/components/ui/switch"
-import { useForm } from "react-hook-form"
 import { Button } from '@/components/ui/button'
-import { accptingMessage } from '@/app/schemas/isacceptingmesSchema'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { RefreshCw } from 'lucide-react';
-import { LoaderCircle } from 'lucide-react';
 const DashBoard = () => {
-    const form = useForm({
-        resolver: zodResolver(accptingMessage)
-    })
+
     const [switchLoading, setswitchLoading] = useState(false);
     const [copyButtonText, setCopyButtonText] = useState("Copy")
     const [isLoading, setisLoading] = useState(false);
