@@ -47,7 +47,7 @@ const DashBoard = () => {
     useEffect(() => {
         const protocol = window.location.protocol;
         const host = window.location.host
-        setProfileUrl(`${protocol}//${host}/u/${username}`);
+        setProfileUrl(`${protocol}//${host}/user/${username}`);
     }, [username])
 
 

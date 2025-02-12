@@ -122,7 +122,7 @@ const SignUpPage = () => {
           </form>
         </Form>
         <div>
-          <p>Already Have an Account <Link href='/sign-in'>Sign in</Link></p>
+          <p>Already Have an Account <Link href='/sign-in' className="text-blue-500">Sign in</Link></p>
         </div>
       </div>
 
