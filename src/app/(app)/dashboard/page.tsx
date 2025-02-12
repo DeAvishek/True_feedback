@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-react';
 const DashBoard = () => {
 
-    const [switchLoading, setswitchLoading] = useState(false);
     const [copyButtonText, setCopyButtonText] = useState("Copy")
     const [isLoading, setisLoading] = useState(false);
     const [Messages, setMessages] = useState([]);
@@ -62,14 +61,11 @@ const DashBoard = () => {
     const setAcceptingStatus = async () => {
 
         try {
-            setswitchLoading(true)
             const response = await axios.post('/api/isacceptmessage')
             console.log(response.data.message) //todo to remove
-        } catch (error: any) {
+        } catch (error) {
             console.log(error.response?.data?.error) //todo to remove
-        } finally {
-            setswitchLoading(false)
-        }
+        } 
 
     }
 
@@ -84,7 +80,7 @@ const DashBoard = () => {
             console.log(error.response.data.error) //todo to remove
         }
 
-    }, [getmessages, setAcceptingStatus])
+    },[])
 
 
     useEffect(() => {

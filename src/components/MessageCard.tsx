@@ -24,28 +24,28 @@ type MessageCardProps = {
   content: string
 }
 const MessageCard = ({ messageId, content }: MessageCardProps) => {
-  const [isLoading, setisLoading] = useState(false)
-  const [responseMessage, setResponseMesssage] = useState('')
-  const [isdeleted,setisdeleted]=useState(false)
+
+
+
   const handleDeleteMessage = async () => {
     try {
-      setisLoading(true);
-      setResponseMesssage('');
-      setisdeleted(true)
+  
+     
+
       const response = await axios.delete(`/api/delete-message/${messageId}`)
       if (response.status === 200) {
         console.log("Message deleted success fully with id ", messageId) //todo to remove
-        setResponseMesssage(response.data.message)
-      }
-    } catch (error: any) {
-      console.log(error);  //todo to remove
-      setResponseMesssage(error.response.data.error)
 
-    } finally {
-      setisLoading(false)
-      setisdeleted(false)
+      }
+    } catch (error) {
+      console.log(error || "error to delete message");  //todo to remove
+
     }
   }
+
+
+ 
+
   return (
     <>
       <Card className="w-[300px] p-2">

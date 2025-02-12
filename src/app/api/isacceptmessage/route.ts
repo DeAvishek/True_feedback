@@ -26,7 +26,7 @@ export async function POST(request: Request) {
         return new Response(JSON.stringify({ success: true, message: "Accepting message status updated successfully" }), { status: 200 })
 
     } catch (error) {
-        return new Response(JSON.stringify({ success: false, message: "Internal server error" }), { status: 500 })
+        return new Response(JSON.stringify({ success: false, message: error || "Internal server error" }), { status: 500 })
     }
 }
 
@@ -50,6 +50,6 @@ export async function GET(request: Request) {
         return new Response(JSON.stringify({ success: true, AcceptMessage:isAcceptingMessage }), { status: 200 })
 
     } catch (error) {
-        return new Response(JSON.stringify({ success: false, message: "Internal server error" }), { status: 500 })
+        return new Response(JSON.stringify({ success: false, message: error ||"Internal server error" }), { status: 500 })
     }
 }

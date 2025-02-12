@@ -31,12 +31,8 @@ export async function POST(request:Request){
         user.message.push(message as IMessage)
         await user.save()
         return new Response(JSON.stringify({success:true,message:"Message send successfully"}),{status:200})
-    } catch (error:any) {
-        const errorMessage =
-        error.name === "ZodError"
-        ? error.errors.map((e: any) => e.message).join(", ")
-        : error.message || "Internal server error";
-        return new Response(JSON.stringify({ success: false, message:errorMessage }), { status: 500 })
+    } catch (error) {
+        return new Response(JSON.stringify({ success: false, message:error ||"Internal server error" }), { status: 500 })
     }
 
 }

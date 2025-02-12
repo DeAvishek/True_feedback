@@ -11,8 +11,6 @@ import Link from "next/link";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-
 const SignUpPage = () => {
   const [username, setusername] = useState('');
   const [UserNameMessage, setUserNameMessage] = useState('')
@@ -25,14 +23,13 @@ const SignUpPage = () => {
   const form = useForm({
     resolver: zodResolver(SignupScheamValidation)
   })
-  //checking username
   const checkUseName = async () => {
     try {
       setisCheckingName(true)
       setUserNameMessage('')
       const response = await axios.get(`/api/checking-username?username=${username}`)
       setUserNameMessage(response.data.message)
-    } catch (error: any) {
+    } catch (error) {
       setUserNameMessage(error.response.data.error)
     } finally {
       setisCheckingName(false)
@@ -58,6 +55,7 @@ const SignUpPage = () => {
   useEffect(() => {
     checkUseName()
   },[username])
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 " >
       <div className="w-full max-w-md p-8 space-y-8 bg-white-rounded-lg shadow-md ">

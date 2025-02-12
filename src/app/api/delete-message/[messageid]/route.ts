@@ -31,9 +31,9 @@ export async function DELETE(request: Request,{params}:{params:{messageid:string
             { status: 200 }
         );
 
-    } catch (error:any) {
+    } catch (error) {
         return new Response(JSON.stringify(
-            { success: false, message: "internal server error" }),
+            { success: false, message: error.message ||"internal server error" }),
             { status: 500 });
     }
 

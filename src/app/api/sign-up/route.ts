@@ -8,7 +8,6 @@ export async function POST(request: Request) {
     await dbConnect()//database connection establish
     try {
         const { username, email, password } = await request.json()//get request bodies data
-        const signUpValidation=SignupScheamValidation.parse({username,email,password})
         const existing_User_By_UserName = await UserModel.findOne({ username,isVerified:true })
 
         if (existing_User_By_UserName) {

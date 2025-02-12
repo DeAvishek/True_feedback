@@ -22,9 +22,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const handleDeleteMessage=()=>{
-    console.log("hii i am delete message card")
-  }
   return (
     <html lang="en">
         <AuthProvider>

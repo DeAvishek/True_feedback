@@ -3,7 +3,7 @@ import UserModel from "@/app/models/user";
 
 export async function GET(request:Request){
     const {searchParams}=new URL(request.url)
-    let UserName=searchParams.get('username')
+    const UserName=searchParams.get('username')
     try {
         await dbConnect();
         const user=await UserModel.findOne({username:UserName})
@@ -31,7 +31,7 @@ export async function GET(request:Request){
             status:200
         })
         
-    } catch (error:any) {
+    } catch (error) {
         console.error("Error checking username:", error.message || error);
         return new Response(JSON.stringify({
             success: false,

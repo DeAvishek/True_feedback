@@ -40,7 +40,7 @@ const SignInPage = () => {
         setResponseMessage("Logged in successfully");
         router.push('/dashboard');
       }
-    } catch (error: any) {
+    } catch (error) {
       setResponseMessage("Something went wrong. Please try again.");
       console.error(error);
     } finally {

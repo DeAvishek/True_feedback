@@ -1,8 +1,6 @@
 import{verifyCodeValidation} from '@/app/schemas/verifycodeScheam'
-import { usernameValidation } from '@/app/schemas/signupScheam'
 import dbConnect from '@/app/lib/db';
 import UserModel from '@/app/models/user';
-import { date } from 'zod';
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -12,7 +10,6 @@ export async function POST(request: Request) {
     const verifyCode = body['verify-code'];
 
     // Parse inputs
-    const UserName = usernameValidation.parse(username);
     const OTP = verifyCodeValidation.parse(verifyCode);
 
     // Database check

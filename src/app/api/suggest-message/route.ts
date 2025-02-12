@@ -17,10 +17,10 @@ export async function GET(request:Request){
                 status:200
             })
         }
-    } catch (error:any) {
+    } catch (error) {
         return new Response(JSON.stringify({
             success:false,
-            message:error.message
+            message:error || "Internal server error"
         }),{
             status:500
         })

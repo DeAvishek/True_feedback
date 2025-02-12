@@ -34,7 +34,7 @@ export const AuthOptions: NextAuthOptions = {
                     console.log("✅ User authenticated:", user.email);  //Todo remove
                     return user
 
-                } catch (error: any) {
+                } catch (error) {
                     throw new Error(error.message || "Authentication failed");
                 }
 

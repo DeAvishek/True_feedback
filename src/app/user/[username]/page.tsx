@@ -23,7 +23,6 @@ import { RefreshCw } from 'lucide-react';
 const Page = () => {
     const [isSubmittingForm, setIsSubmittingForm] = useState(false);
     const [responseMessage, setresponseMessage] = useState('');
-    const [suggestMessages, setsuggestMessages] = useState('');
     const [loadingForSuggestMessage, setloadingForSuggestMessage] = useState(false)
     const [messageArr, setmessageArr] = useState([])
     const params = useParams()
@@ -67,8 +66,8 @@ const Page = () => {
             if (response.status === 200) {
                 setmessageArr(response.data.message.split("|"))
             }
-        } catch (error: any) {
-            setsuggestMessages(error.response.data.error)
+        } catch (error) {
+            console.log(error ||"getting error from ai")
         } finally {
             setloadingForSuggestMessage(false)
         }
@@ -101,7 +100,7 @@ const Page = () => {
                                 (<p className='text-green-500'>Message send successfully</p>) :
                                 (<p className='text-red-500'>{responseMessage}</p>)
                             }
-                            <Button type="submit" className="w-full">Send</Button>
+                            <Button type="submit" className="w-full" disabled={isSubmittingForm}>Send</Button>
                         </form>
                     </Form>
 

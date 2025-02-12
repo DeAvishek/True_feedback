@@ -36,7 +36,7 @@ export async function GET(){
         return new Response(JSON.stringify({success:true,result:response[0].messages}),{status:200})
 
         
-    } catch (error:any) {
+    } catch (error) {
         return new Response(JSON.stringify({ success: false, message:error.message ||"internal server error" }), { status: 500 })
     }
 }
