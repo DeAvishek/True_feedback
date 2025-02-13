@@ -34,7 +34,7 @@ export async function DELETE(request: Request,{params}:{params:{messageid:string
 
     } catch (error:unknown) {
             return new Response(JSON.stringify(
-                { success: false, message:"internal server error" }),
+                { success: false, message:error ||"internal server error" }),
                 { status: 500 });
         
     }

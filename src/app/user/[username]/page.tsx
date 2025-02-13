@@ -51,9 +51,14 @@ const Page = () => {
                 console.log(response.data.message) //todo remove
                 form.reset()
             }
-        } catch (error: any) {
-            setresponseMessage(error.response.data.error || 'Something went wrong')
-            console.log(error.response.data.error)//todo remove
+        } catch (error:unknown) {
+            if(axios.isAxiosError(error)){
+                setresponseMessage(error.response?.data?.error || 'User is not accepting message')
+                console.log(error.response?.data?.error)//todo remove
+            }else{
+                setresponseMessage("somthing went to wrong")
+            }
+            
 
         } finally {
             setIsSubmittingForm(false);
@@ -66,8 +71,13 @@ const Page = () => {
             if (response.status === 200) {
                 setmessageArr(response.data.message.split("|"))
             }
-        } catch (error) {
-            console.log(error ||"getting error from ai")
+        } catch (error:unknown) {
+            if(axios.isAxiosError(error)){
+                console.log(error.response?.data?.error ||"getting error from ai")
+            }else{
+                console.log("GeniAi error")
+            }
+            
         } finally {
             setloadingForSuggestMessage(false)
         }
@@ -75,7 +85,7 @@ const Page = () => {
     }
     useEffect(() => {
         getSuggetMessage()
-    }, [RefreshCw])
+    }, [username])
 
     return (
         <>

@@ -4,7 +4,7 @@ import dbConnect from "@/app/lib/db"
 import UserModel from "@/app/models/user"
 import mongoose from "mongoose"
 
-export async function POST(request: Request) {
+export async function POST() {
     const session = await getServerSession(AuthOptions)
     if (!session || !session.user || !session.user._id) {
         return new Response(JSON.stringify({ success: false, message: "Unauthorized access" }), { status: 401 });
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
     const session = await getServerSession(AuthOptions)
     if (!session || !session.user || !session.user._id) {
         return new Response(JSON.stringify({ success: false, message: "Unauthorized access" }), { status: 401 });
@@ -50,6 +50,6 @@ export async function GET(request: Request) {
         return new Response(JSON.stringify({ success: true, AcceptMessage:isAcceptingMessage }), { status: 200 })
 
     } catch (error) {
-        return new Response(JSON.stringify({ success: false, message:"Internal server error" }), { status: 500 })
+        return new Response(JSON.stringify({ success: false, message:error ||"Internal server error" }), { status: 500 })
     }
 }

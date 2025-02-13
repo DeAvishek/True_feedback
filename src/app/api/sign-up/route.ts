@@ -2,7 +2,6 @@ import UserModel from "@/app/models/user";
 import dbConnect from "@/app/lib/db";
 import bcrypt from "bcryptjs"
 import emailSend from "@/app/helper/sendEmailverification";
-import {SignupScheamValidation} from '@/app/schemas/signupScheam'
 
 export async function POST(request: Request) {
     await dbConnect()//database connection establish

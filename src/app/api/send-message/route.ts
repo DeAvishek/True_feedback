@@ -32,7 +32,7 @@ export async function POST(request:Request){
         await user.save()
         return new Response(JSON.stringify({success:true,message:"Message send successfully"}),{status:200})
     } catch (error) {
-        return new Response(JSON.stringify({ success: false, message:"Internal server error" }), { status: 500 })
+        return new Response(JSON.stringify({ success: false, message:error||"Internal server error" }), { status: 500 })
     }
 
 }
