@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth/next"
 import { AuthOptions } from "@/app/api/auth/[...nextauth]/providers"
 import mongoose from "mongoose"
 
+
 export async function DELETE(request: Request,{params}:{params:{messageid:string}}) {
     const messageId=await params.messageid
     const session = await getServerSession(AuthOptions)
@@ -31,10 +32,11 @@ export async function DELETE(request: Request,{params}:{params:{messageid:string
             { status: 200 }
         );
 
-    } catch (error) {
-        return new Response(JSON.stringify(
-            { success: false, message: error.message ||"internal server error" }),
-            { status: 500 });
+    } catch (error:unknown) {
+            return new Response(JSON.stringify(
+                { success: false, message:"internal server error" }),
+                { status: 500 });
+        
     }
 
 

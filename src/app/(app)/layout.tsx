@@ -27,7 +27,6 @@ export default function RootLayout({
         <AuthProvider>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
             <Navbar/>
-            {/* <MessageCard messageId="1234" handleDeleteMessage="123456"/> */}
           {children}
         </body>
         </AuthProvider>

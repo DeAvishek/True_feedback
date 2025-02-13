@@ -5,7 +5,7 @@ const api_key=process.env.GENAI_API_KEY
 const GenAi=new GoogleGenerativeAI(api_key)
 
 const model=GenAi.getGenerativeModel({model:"gemini-1.5-flash"})
-export async function GET(request:Request){
+export async function GET(){
     try {
         const prompt=`you are an AI assistant who suggest three interseting feedback messages with in 20 words(each message) by creating | between each`
         const result=await model.generateContent(prompt)
@@ -20,7 +20,7 @@ export async function GET(request:Request){
     } catch (error) {
         return new Response(JSON.stringify({
             success:false,
-            message:error || "Internal server error"
+            message:"Internal server error"
         }),{
             status:500
         })

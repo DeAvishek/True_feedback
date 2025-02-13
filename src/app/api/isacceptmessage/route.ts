@@ -50,6 +50,6 @@ export async function GET(request: Request) {
         return new Response(JSON.stringify({ success: true, AcceptMessage:isAcceptingMessage }), { status: 200 })
 
     } catch (error) {
-        return new Response(JSON.stringify({ success: false, message: error ||"Internal server error" }), { status: 500 })
+        return new Response(JSON.stringify({ success: false, message:"Internal server error" }), { status: 500 })
     }
 }

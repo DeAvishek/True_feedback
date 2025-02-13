@@ -3,6 +3,7 @@ import type { NextAuthOptions } from "next-auth"
 import dbConnect from "@/app/lib/db";
 import bcrypt from "bcryptjs"
 import UserModel from "@/app/models/user";
+import axios from "axios";
 export const AuthOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
@@ -34,8 +35,13 @@ export const AuthOptions: NextAuthOptions = {
                     console.log("✅ User authenticated:", user.email);  //Todo remove
                     return user
 
-                } catch (error) {
-                    throw new Error(error.message || "Authentication failed");
+                } catch (error:unknown) {
+                    if(axios.isAxiosError(error)){
+                        throw new Error(error?.message || "Authentication failed");
+                    }else{
+                        throw new Error("Authentication failed")
+                    }
+                    
                 }
 
             }

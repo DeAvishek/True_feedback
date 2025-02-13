@@ -13,8 +13,7 @@ import { signIn } from "next-auth/react";
 
 const SignInPage = () => {
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [responseMessage, setResponseMessage] = useState('');
-
+  const [responseMessage, setResponseMessage] = useState('')
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(SigninSchemaValidation),
@@ -30,7 +29,7 @@ const SignInPage = () => {
         redirect:false,
         email: data.email,
         password: data.password
-      });
+      })
 
       console.log("Sign-in response:", response);
 

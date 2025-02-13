@@ -31,8 +31,7 @@ export async function GET(request:Request){
             status:200
         })
         
-    } catch (error) {
-        console.error("Error checking username:", error.message || error);
+    } catch (error:unknown) {
         return new Response(JSON.stringify({
             success: false,
             message: error ||"Internal server error."

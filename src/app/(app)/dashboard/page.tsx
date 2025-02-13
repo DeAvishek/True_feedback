@@ -13,7 +13,6 @@ const DashBoard = () => {
     const [copyButtonText, setCopyButtonText] = useState("Copy")
     const [isLoading, setisLoading] = useState(false);
     const [Messages, setMessages] = useState([]);
-    const [ResponseMessage, setResponseMesssage] = useState('')
     const { data: session } = useSession()
     const [ProfileUrl, setProfileUrl] = useState('')
     const username = session?.user.username
@@ -22,16 +21,16 @@ const DashBoard = () => {
     const getmessages = async () => {
         try {
             setisLoading(true);
-            setResponseMesssage('')
             const response = await axios.get('/api/get-messages')
             if (response.status === 200) {
                 setMessages(response.data.result);
-                setResponseMesssage("Your message fectched...") //todo to remove
                 console.log(response.data.result)  //Todo to remove
             }
-        } catch (error: any) {
-            setResponseMesssage(error.response.data.error)
-            console.log(ResponseMessage) //Todo remove
+        } catch (error:unknown) {
+            if(axios.isAxiosError(error)){
+                console.log(error.response?.data?.error ||"An error occured") //todo to remove
+            }
+             console.log("An unexpected error") //Todo remove
         } finally {
             setisLoading(false)
         }
@@ -52,7 +51,7 @@ const DashBoard = () => {
                 setCopyButtonText("Copy ")
             }, 1000);
 
-        } catch (error: any) {
+        } catch (error) {
             console.log("failed to copy ", error)
         }
 
@@ -63,8 +62,12 @@ const DashBoard = () => {
         try {
             const response = await axios.post('/api/isacceptmessage')
             console.log(response.data.message) //todo to remove
-        } catch (error) {
-            console.log(error.response?.data?.error) //todo to remove
+        } catch (error:unknown) {
+            if(axios.isAxiosError(error)){
+                console.log(error.response?.data?.error ||"An error Occured") 
+            }
+            console.log("An unexpected error occured")
+           
         } 
 
     }
@@ -76,8 +79,12 @@ const DashBoard = () => {
                 console.log(response.data.AcceptMessage)   //todo remove
                 setstatus(response.data.AcceptMessage)
             }
-        } catch (error: any) {
-            console.log(error.response.data.error) //todo to remove
+        } catch (error:unknown) {
+            if(axios.isAxiosError(error)){
+                console.log(error.response?.data?.error ||"An error occured") //todo to remove
+            }
+             console.log("An unexpected error") //todo to remove
+            
         }
 
     },[])

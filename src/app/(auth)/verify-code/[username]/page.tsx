@@ -1,5 +1,4 @@
 'use client'
-
 import { verifyCodeValidation} from '@/app/schemas/verifycodeScheam'// Fix filename spelling
 import { useForm } from "react-hook-form"
 import { z } from 'zod'
@@ -41,12 +40,15 @@ export default function Page() {
             if (response.status === 200) {
                 router.push('/sign-in');
             }
-        } catch (error:any) {
-            setResponseMessage(
-                error.response?.data?.message || 
-                error.response?.data?.error || 
-                'An error occurred during verification'
-            );
+        } catch (error:unknown) {
+            if(axios.isAxiosError(error)){
+                setResponseMessage(
+                    error.response?.data?.error || 
+                    'An error occurred during verification'
+                );
+            }else{
+                setResponseMessage("error occur during verification")
+            }   
         } finally {
             setIsVerify(false);
         }

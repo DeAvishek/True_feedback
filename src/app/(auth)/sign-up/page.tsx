@@ -29,8 +29,13 @@ const SignUpPage = () => {
       setUserNameMessage('')
       const response = await axios.get(`/api/checking-username?username=${username}`)
       setUserNameMessage(response.data.message)
-    } catch (error) {
-      setUserNameMessage(error.response.data.error)
+    } catch (error:unknown) {
+      if(axios.isAxiosError(error)){
+        setUserNameMessage(error.response?.data?.error)
+      }else{
+        setUserNameMessage("Error occur during validating username")
+      }
+  
     } finally {
       setisCheckingName(false)
     }
@@ -44,9 +49,14 @@ const SignUpPage = () => {
         console.log(ResponseMessage) //Todo remove
         router.push(`/verify-code/${username}`)
       }
-    } catch (error: any) {
-      setResponseMessage(error.response.data.error)
-      console.log(setResponseMessage) //Todo remove
+    } catch (error:unknown) {
+      if(axios.isAxiosError(error)){
+        setResponseMessage(error.response?.data?.error)
+        console.log(ResponseMessage) //Todo remove
+      }else{
+        setResponseMessage("Error occured during Sign up")
+        console.log(ResponseMessage)  //Todo to remove
+      }  
     }finally{
       setisSubmittingForm(false)
       setResponseMessage('')
