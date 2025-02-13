@@ -12,7 +12,7 @@ export const AuthOptions: NextAuthOptions = {
                 email: { label: "email", type: "text" },
                 password: { label: "password", type: "password" }
             },
-            async authorize(credentials): Promise<{ _id: string; name: string; email: string } | null>{
+            async authorize(credentials): Promise< UserModel| null>{
                 if (!credentials?.email || !credentials.password) {
                     throw new Error("Email and password are required");
                 }
