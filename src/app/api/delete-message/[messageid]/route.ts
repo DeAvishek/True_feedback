@@ -5,8 +5,9 @@ import {AuthOptions } from "@/app/api/auth/[...nextauth]/providers";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(request: NextRequest, { params }: { params: { messageid: string } }) {
-    const messageId = params.messageid; 
+export async function DELETE(request: NextRequest) {
+    const url=new URL(request.url)
+    const messageId=url.pathname.split("/").pop()
     const session = await getServerSession(AuthOptions);
 
     if (!session || !session.user || !session.user._id) {
