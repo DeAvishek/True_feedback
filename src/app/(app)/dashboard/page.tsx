@@ -8,11 +8,15 @@ import Loader from '@/components/Loader'
 import { Switch } from "@/components/ui/switch"
 import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-react';
+type Message={
+    _id:string,
+    content:string
+}
 const DashBoard = () => {
 
     const [copyButtonText, setCopyButtonText] = useState("Copy")
     const [isLoading, setisLoading] = useState(false);
-    const [Messages, setMessages] = useState([]);
+    const [Messages, setMessages] = useState<Message[]>([]);
     const { data: session } = useSession()
     const [ProfileUrl, setProfileUrl] = useState('')
     const username = session?.user.username
