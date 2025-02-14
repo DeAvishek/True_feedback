@@ -42,7 +42,7 @@ const Page = () => {
             setresponseMessage('')
             const response = await axios.post('/api/send-message', {
                 'content': data['content'],
-                user: username
+                 user: username
             }
 
             )

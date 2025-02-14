@@ -1,5 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials"
-import type { NextAuthOptions } from "next-auth"
+import type { NextAuthOptions, User } from "next-auth"
 import dbConnect from "@/app/lib/db";
 import bcrypt from "bcryptjs"
 import UserModel from "@/app/models/user";
@@ -12,7 +12,7 @@ export const AuthOptions: NextAuthOptions = {
                 email: { label: "email", type: "text" },
                 password: { label: "password", type: "password" }
             },
-            async authorize(credentials): Promise< UserModel| null>{
+            async authorize(credentials): Promise<User| null>{
                 if (!credentials?.email || !credentials.password) {
                     throw new Error("Email and password are required");
                 }
@@ -28,20 +28,16 @@ export const AuthOptions: NextAuthOptions = {
                         console.log("❌ User not verified:", user.email);   //Todo remove
                         throw new Error("Please verify your account first")
                     }
-                    const comparePassword = await bcrypt.compare(credentials.password, user.password)
+                    const comparePassword =user.password? await bcrypt.compare(credentials.password, user.password):false
                     if (!comparePassword) {
                         throw new Error("invalid credentials.. ok")
                     }
                     console.log("✅ User authenticated:", user.email);  //Todo remove
-                    return user
+                    return user as User
 
-                } catch (error:unknown) {
-                    if(axios.isAxiosError(error)){
-                        throw new Error(error?.message || "Authentication failed");
-                    }else{
-                        throw new Error("Authentication failed")
-                    }
-                    
+                } catch (error) {
+                    console.error("Authorization error:", error);
+                    throw new Error("Authentication failed");
                 }
 
             }

@@ -123,10 +123,10 @@ const DashBoard = () => {
                 <p>No content</p>
             ) : (
                 <>
-                    <Switch
+                    {/* <Switch
                         onChange={acceptingStatus}
                         onCheckedChange={setAcceptingStatus} />
-                    Accepting Message{status ? (<p>On</p>) : (<p>Off</p>)}
+                    Accepting Message{status ? (<p>On</p>) : (<p>Off</p>)} */}
                     <Button  onClick={getmessages} className='mt-2 '>
                         <RefreshCw />
                     </Button>
