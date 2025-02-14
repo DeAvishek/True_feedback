@@ -23,7 +23,7 @@ const SignUpPage = () => {
   const form = useForm<z.infer<typeof SignupScheamValidation>>({
     resolver: zodResolver(SignupScheamValidation),
   });
-  const checkUseName = async () => {
+  const checkUserName = async () => {
     try {
       setisCheckingName(true)
       setUserNameMessage('')
@@ -63,7 +63,7 @@ const SignUpPage = () => {
     }
   }
   useEffect(() => {
-    checkUseName()
+    checkUserName()
   },[username])
 
   return (

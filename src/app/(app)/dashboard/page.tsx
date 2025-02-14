@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import MessageCard from '@/components/MessageCard'
 import Loader from '@/components/Loader'
-import { Switch } from "@/components/ui/switch"
 import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-react';
 type Message={
@@ -20,7 +19,6 @@ const DashBoard = () => {
     const { data: session } = useSession()
     const [ProfileUrl, setProfileUrl] = useState('')
     const username = session?.user.username
-    const [status, setstatus] = useState('')
 
     const getmessages = async () => {
         try {
@@ -61,42 +59,26 @@ const DashBoard = () => {
 
     }, [ProfileUrl])
 
-    const setAcceptingStatus = async () => {
+    // const setAcceptingStatus = async () => {
 
-        try {
-            const response = await axios.post('/api/isacceptmessage')
-            console.log(response.data.message) //todo to remove
-        } catch (error:unknown) {
-            if(axios.isAxiosError(error)){
-                console.log(error.response?.data?.error ||"An error Occured") 
-            }
-            console.log("An unexpected error occured")
+    //     try {
+    //         const response = await axios.post('/api/isacceptmessage')
+    //         console.log(response.data.message) //todo to remove
+    //     } catch (error:unknown) {
+    //         if(axios.isAxiosError(error)){
+    //             console.log(error.response?.data?.error ||"An error Occured") 
+    //         }
+    //         console.log("An unexpected error occured")
            
-        } 
+    //     } 
 
-    }
+    // }
 
-    const acceptingStatus = useCallback(async () => {
-        try {
-            const response = await axios.get('/api/isacceptmessage')
-            if (response.status === 200) {
-                console.log(response.data.AcceptMessage)   //todo remove
-                setstatus(response.data.AcceptMessage)
-            }
-        } catch (error:unknown) {
-            if(axios.isAxiosError(error)){
-                console.log(error.response?.data?.error ||"An error occured") //todo to remove
-            }
-             console.log("An unexpected error") //todo to remove
-            
-        }
 
-    },[])
 
 
     useEffect(() => {
         getmessages()
-        acceptingStatus()
 
     }, [username])
     return (
@@ -123,10 +105,6 @@ const DashBoard = () => {
                 <p>No content</p>
             ) : (
                 <>
-                    {/* <Switch
-                        onChange={acceptingStatus}
-                        onCheckedChange={setAcceptingStatus} />
-                    Accepting Message{status ? (<p>On</p>) : (<p>Off</p>)} */}
                     <Button  onClick={getmessages} className='mt-2 '>
                         <RefreshCw />
                     </Button>
