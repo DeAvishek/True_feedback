@@ -20,9 +20,9 @@ const SignUpPage = () => {
   const debounced = useDebounceCallback(setusername, 500) //debouncing the username
   const router=useRouter()
   //zod validation
-  const form = useForm({
-    resolver: zodResolver(SignupScheamValidation)
-  })
+  const form = useForm<z.infer<typeof SignupScheamValidation>>({
+    resolver: zodResolver(SignupScheamValidation),
+  });
   const checkUseName = async () => {
     try {
       setisCheckingName(true)

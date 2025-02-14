@@ -30,13 +30,13 @@ const Page = () => {
     const messageScheam = z.object({
         'content': messageValidation
     })
-    const form = useForm({
+    const form = useForm<z.infer<typeof messageScheam>>({
         resolver: zodResolver(messageScheam),
         defaultValues: {
             'content': "",
         },
     })
-    const handlePostMessage = async (data: z.infer<typeof messageValidation>) => {
+    const handlePostMessage = async (data: z.infer<typeof messageScheam>) => {
         try {
             setIsSubmittingForm(true)
             setresponseMessage('')
@@ -84,7 +84,7 @@ const Page = () => {
 
     }
     useEffect(() => {
-        getSuggetMessage()
+       if(username) getSuggetMessage()
     }, [username])
 
     return (
