@@ -19,7 +19,7 @@ const Navbar = () => {
                 {user && <div className="flex items-center gap-4">
                     <span className="text-sm md:text-base">Welcome, {user.email}</span>
                     <Button 
-                        onClick={() => signOut({callbackUrl:"/sign-in"})} 
+                        onClick={() => signOut({callbackUrl:"https://true-feedback-hixr.onrender.com/sign-in"})} 
                         className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">
                         Log out
                     </Button>
